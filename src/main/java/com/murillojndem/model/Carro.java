@@ -9,8 +9,8 @@ public class Carro {
 	private String modelo;
 	private String placa;
 	private boolean estado;
-	private int tanque;
-	private float velocidade;
+	private double tanque;
+	private double velocidade;
 	private Marcha marcha;
 	private Direcao direcao;
 	
@@ -52,16 +52,16 @@ public class Carro {
 	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
-	public int getTanque() {
+	public double getTanque() {
 		return tanque;
 	}
-	public void setTanque(int tanque) {
+	public void setTanque(double tanque) {
 		this.tanque = tanque;
 	}
-	public float getVelocidade() {
+	public double getVelocidade() {
 		return velocidade;
 	}
-	public void setVelocidade(float velocidade) {
+	public void setVelocidade(double velocidade) {
 		this.velocidade = velocidade;
 	}
 	public com.murillojndem.model.enums.Marcha getMarcha() {
