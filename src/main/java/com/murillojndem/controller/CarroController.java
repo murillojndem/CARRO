@@ -16,6 +16,14 @@ public class CarroController {
 	public void voltarMarchaController() {
 		carroService.voltarMarchaService();
 	}
+	
+	public void andarCarroController(double distancia) {
+		carroService.andarCarroService(distancia);
+	}
+	
+	public void acelerarController() {
+		carroService.acelerarService();
+	}
 
 	
 

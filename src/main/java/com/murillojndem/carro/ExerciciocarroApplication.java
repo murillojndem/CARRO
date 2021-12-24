@@ -14,15 +14,17 @@ public class ExerciciocarroApplication {
 		CarroController carroController = new CarroController();
 		try (Scanner scan = new Scanner(System.in)) {
 			int opcaoEscolhida;
+			double distancia;
 			
 			do {
 				System.out.println("0 - Sair");
 				System.out.println("1 - Ligar/Desligar o carro");
 				System.out.println("2 - Passar a marcha");
 				System.out.println("3 - Retornar a marcha");
+				System.out.println("4 - Andar com o carro");
+				System.out.println("5 - Acelerar");
 				opcaoEscolhida = scan.nextInt();
 				
-				//comentario
 				switch(opcaoEscolhida) {
 					case 1 : {
 						carroController.ligarCarroController();
@@ -35,6 +37,19 @@ public class ExerciciocarroApplication {
 					
 					case 3 : {
 						carroController.voltarMarchaController();
+						break;
+					}
+					
+					case 4 : {
+						System.out.println("Digite quantos quilometros quer andar:");
+						distancia = scan.nextInt();
+						carroController.andarCarroController(distancia);
+						break;
+					}
+					
+					case 5 : {
+						carroController.acelerarController();
+						break;
 					}
 				}
 			} while (opcaoEscolhida != 0);
