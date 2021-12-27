@@ -24,7 +24,22 @@ public class CarroController {
 	public void acelerarController() {
 		carroService.acelerarService();
 	}
-
 	
+	public void desacelerarController() {
+		carroService.desacelerarService();
+	}
+
+	public boolean checarEstadoController() {
+		return carroService.checarEstado();
+	}
+	
+	public void pararCarroController() {
+		carroService.pararCarroService();
+	}
+
+	public void abastecerCarroController(double quantidade) {
+		carroService.abastecerCombustivel(quantidade);
+		
+	}
 
 }
