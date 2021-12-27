@@ -5,118 +5,159 @@ import com.murillojndem.model.enums.Direcao;
 import com.murillojndem.model.enums.Marcha;
 
 public class CarroService {
-	private Carro carro = new Carro(
-			"Chevrolet",
-			"Onix", 
-			"ASD-1234", 
-			false, 
-			50, 
-			0, 
-			Marcha.PONTOMORTO, 
-			Direcao.PARADO);
-	
-	
-	
+	private Carro carro = new Carro("Chevrolet", "Onix", "ASD-1234", false, 50, 0, Marcha.PONTOMORTO, Direcao.PARADO);
+
 	public void ligarCarroService() {
-		if (carro.getEstado() == false) {
+		if (!carro.getEstado()) {
 			carro.setEstado(true);
-			
-			System.out.println("\nCarro esta ligado\n");
-		} else { 
+			System.out.println("\nCarro esta ligado");
+		} else {
 			carro.setEstado(false);
-			System.out.println("\nCarro esta desligado\n");
-		}		
+			System.out.println("\nCarro esta desligado");
+		}
 	}
 
 	public void passarMarchaService() {
-		if (checkEstado()) {			
-			if (checkMarcha() != Marcha.SEXTA) {
+		if (checarEstado()) {
+			if (checarMarcha() != Marcha.SEXTA) {
 				Marcha novaMarcha = carro.getMarcha().getNextMarcha();
 				carro.setMarcha(novaMarcha);
-				System.out.println("\nMarcha atual: " + carro.getMarcha() + "\n");
+				System.out.println("\nMarcha atual: " + carro.getMarcha());
 			} else {
-				System.out.println("\nMarcha maxima, voce nao pode passar da SEXTA marcha\n");
-			} 
+				System.out.println("\nMarcha maxima, voce nao pode passar da SEXTA marcha");
+			}
 		} else {
-			System.out.println("\nO carro esta desligado\n");
+			System.out.println("\nO carro esta desligado");
 		}
-	}	
+	}
 
 	public void voltarMarchaService() {
-		if (checkEstado()) {			
-			if (checkMarcha() != Marcha.RE) {
+		if (checarEstado()) {
+			if (checarMarcha() != Marcha.RE) {
 				Marcha novaMarcha = carro.getMarcha().getPreviousMarcha();
 				carro.setMarcha(novaMarcha);
-				System.out.println("\nMarcha atual: " + carro.getMarcha() + "\n");
+				System.out.println("\nMarcha atual: " + carro.getMarcha());
 			} else {
-				System.out.println("\nMarcha minima, voce nao pode passar da marcha re\n");
-			} 
+				System.out.println("\nMarcha minima, voce nao pode passar da marcha re");
+			}
 		} else {
-			System.out.println("\nO carro esta desligado\n");
-		}
-	}
-	
-	
-	public Marcha checkMarcha() {
-		return carro.getMarcha();
-	}
-	
-	public boolean checkEstado() {
-		return carro.getEstado();
-	}
-	
-	public void consomeCombustivel(double distancia) {
-		double combustivelConsumido = distancia * 0.1;
-		carro.setTanque(carro.getTanque() - combustivelConsumido);
-		System.out.println("\nO tanque do carro agora contem " + carro.getTanque() + " litros de combustivel\n");
-	}
-	
-	public void abasteceCombustivel(int quantidade) {
-		
-		if (faltaNoTanque(quantidade) > 50) {
-			double faltaNoTanque = 50 - carro.getTanque();
-			System.out.println("\nO tanque de combustivel esta com " + carro.getTanque() + "litros. Voce so pode abastecer mais " + faltaNoTanque + "\n");
-		} else {
-			carro.setTanque(carro.getTanque() + quantidade);
-			System.out.println("\nO tanque tem " + carro.getTanque() + " litros\n");
+			System.out.println("\nO carro esta desligado");
 		}
 	}
 
-	private double faltaNoTanque(int quantidade) {
+	public Marcha checarMarcha() {
+		return carro.getMarcha();
+	}
+
+	public boolean checarEstado() {
+		return carro.getEstado();
+	}
+
+	public void consumirCombustivel(double distancia) {
+		double combustivelConsumido = distancia * 0.1;
+		carro.setTanque(carro.getTanque() - combustivelConsumido);
+		System.out.println("\nO tanque do carro agora contem " + carro.getTanque() + " litros de combustivel.");
+	}
+
+	public void abastecerCombustivel(double quantidade) {
+		if (faltaNoTanque(quantidade) > 50) {
+			double faltaNoTanque = 50 - carro.getTanque();
+			System.out.println("\nVoce so pode abastecer mais " + faltaNoTanque + " litros.");
+		} else {
+			carro.setTanque(carro.getTanque() + quantidade);
+			System.out.println("\nO tanque tem " + carro.getTanque() + " litros");
+		}
+	}
+
+	private double faltaNoTanque(double quantidade) {
 		return carro.getTanque() + quantidade;
 	}
 
+	private boolean checarCombustivel(double distancia) {
+		double autonomia = carro.getTanque() * 10;
+		if (autonomia >= distancia) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public void andarCarroService(double distancia) {
-		if(carro.getMarcha() == Marcha.PONTOMORTO) {
-			setDirecao();
-			System.out.println("\nA marcha esta em ponto morto, o carro nao anda\n");
-		}else if(carro.getMarcha() == Marcha.RE) {
-			consomeCombustivel(distancia);
-			System.out.println("\nO carro andou " + distancia + " km, andando para " + carro.getDirecao() + ".\n");
-		}else {
-			consomeCombustivel(distancia);
-			setDirecao();
-			System.out.println("\nO carro andou " + distancia + " km, andando para " + carro.getDirecao() + ".\n");
-		}
+		if (carro.getVelocidade() != 0) {
+			if (checarEstado()) {
+				if (checarCombustivel(distancia)) {
+					if (carro.getMarcha() == Marcha.PONTOMORTO) {
+						setDirecao();
+						System.out.println("\nA marcha esta em ponto morto, o carro nao anda");
+					} else if (carro.getMarcha() == Marcha.RE) {
+						setDirecao();
+						consumirCombustivel(distancia);
+						System.out.println(
+								"\nO carro andou " + distancia + " km, andando para " + carro.getDirecao() + ".");
+					} else {
+						consumirCombustivel(distancia);
+						setDirecao();
+						System.out.println(
+								"\nO carro andou " + distancia + " km, andando para " + carro.getDirecao() + ".");
+					}
+				} else
+					System.out.println("\nO tanque tem apenas " + carro.getTanque() + " litros, voce so pode andar "
+							+ (carro.getTanque() * 10) + " km");
+			} else
+				System.out.println("\nCarro esta desligado");
+		} else
+			System.out.println("\nAcelere pra andar com o carro");
 	}
-	
+
 	public void setDirecao() {
-		if(carro.getMarcha() == Marcha.PONTOMORTO && carro.getVelocidade() == 0) {
+		if (carro.getMarcha() == Marcha.PONTOMORTO && carro.getVelocidade() == 0) {
 			carro.setDirecao(Direcao.PARADO);
-		}else if(carro.getMarcha() == Marcha.RE && carro.getVelocidade() != 0) {
+		} else if (carro.getMarcha() == Marcha.RE) {
 			carro.setDirecao(Direcao.TRAS);
-		} else if((carro.getMarcha() != Marcha.PONTOMORTO && carro.getMarcha() != Marcha.RE) && carro.getVelocidade() > 0){
+		} else
 			carro.setDirecao(Direcao.FRENTE);
-		}
 	}
-	
+
 	public void setVelocidade(double velocidade) {
 		carro.setVelocidade(velocidade);
 	}
-	
+
 	public void acelerarService() {
-		setVelocidade(carro.getVelocidade() + 10);
-		System.out.println("\nA velocidade agora e: " + carro.getVelocidade() + " km/h\n");
+		if (checarEstado()) {
+			setVelocidade(carro.getVelocidade() + 10);
+			System.out.println("\nA velocidade agora e: " + carro.getVelocidade() + " km/h");
+			contarGiro();
+		} else
+			System.out.println("\nCarro esta desligado");
 	}
-	
+
+	public void desacelerarService() {
+		if (checarEstado()) {
+			if (carro.getVelocidade() > 0) {
+				setVelocidade(carro.getVelocidade() - 10);
+				System.out.println("\nA velocidade agora e: " + carro.getVelocidade() + " km/h");
+				contarGiro();
+			} else
+				System.out.println("\nColoque em marcha re para andar pra tras");
+		} else
+			System.out.println("\nCarro esta desligado");
+	}
+
+	public void contarGiro() {
+		double velocidade = carro.getVelocidade();
+		if ((velocidade == 10 || velocidade == 30 || velocidade == 50 || velocidade == 70 || velocidade == 90
+				|| velocidade == 110) && carro.getMarcha() != Marcha.RE) {
+			carro.setContaGiro(2);
+			System.out.println("\nValor do conta giro: " + carro.getContaGiro());
+		} else if ((velocidade == 20 || velocidade == 40 || velocidade == 60 || velocidade == 80 || velocidade == 100) && carro.getMarcha() != Marcha.RE) {
+			carro.setContaGiro(3);
+			System.out.println("\nValor do conta giro: " + carro.getContaGiro() + ". Pode passar a marcha");
+		}
+	}
+
+	public void pararCarroService() {
+		carro.setDirecao(Direcao.PARADO);
+		carro.setVelocidade(0);
+		System.out.println("\nA velocidade agora e: " + carro.getVelocidade() + " km/h");
+	}
 }

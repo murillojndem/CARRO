@@ -13,6 +13,7 @@ public class Carro {
 	private double velocidade;
 	private Marcha marcha;
 	private Direcao direcao;
+	private int contaGiro;
 	
 	
 	public Carro(String marca, String modelo, String placa, boolean estado, int tanque, float velocidade,
@@ -75,6 +76,14 @@ public class Carro {
 	}
 	public void setDirecao(com.murillojndem.model.enums.Direcao direcao) {
 		this.direcao = direcao;
+	}
+
+	public int getContaGiro() {
+		return contaGiro;
+	}
+
+	public void setContaGiro(int contaGiro) {
+		this.contaGiro = contaGiro;
 	}
 	
 }
