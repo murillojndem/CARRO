@@ -123,24 +123,34 @@ public class CarroService {
 	}
 
 	public void acelerarService() {
-		if (checarEstado()) {
+		if (checarEstado() && carro.getMarcha() != Marcha.PONTOMORTO) {
 			setVelocidade(carro.getVelocidade() + 10);
+			andarCarroService(0.5);
 			System.out.println("\nA velocidade agora e: " + carro.getVelocidade() + " km/h");
 			contarGiro();
+			if(carro.getContaGiro() == 3)
+			{
+				System.out.println("\nPode passar a marcha");
+			}
 		} else
-			System.out.println("\nCarro esta desligado");
+			System.out.println("\nCarro esta desligado ou em ponto morto");
 	}
 
 	public void desacelerarService() {
-		if (checarEstado()) {
+		if (checarEstado() && carro.getMarcha() != Marcha.PONTOMORTO) {
 			if (carro.getVelocidade() > 0) {
 				setVelocidade(carro.getVelocidade() - 10);
+				andarCarroService(0.5);
 				System.out.println("\nA velocidade agora e: " + carro.getVelocidade() + " km/h");
 				contarGiro();
+				if(carro.getContaGiro() == 2)
+				{
+					System.out.println("\nPode reduzir a marcha");
+				}
 			} else
 				System.out.println("\nColoque em marcha re para andar pra tras");
 		} else
-			System.out.println("\nCarro esta desligado");
+			System.out.println("\nCarro esta desligado ou em ponto morto");
 	}
 
 	public void contarGiro() {
@@ -151,11 +161,12 @@ public class CarroService {
 			System.out.println("\nValor do conta giro: " + carro.getContaGiro());
 		} else if ((velocidade == 20 || velocidade == 40 || velocidade == 60 || velocidade == 80 || velocidade == 100) && carro.getMarcha() != Marcha.RE) {
 			carro.setContaGiro(3);
-			System.out.println("\nValor do conta giro: " + carro.getContaGiro() + ". Pode passar a marcha");
+			System.out.println("\nValor do conta giro: " + carro.getContaGiro());
 		}
 	}
 
 	public void pararCarroService() {
+		andarCarroService(0.5);
 		carro.setDirecao(Direcao.PARADO);
 		carro.setVelocidade(0);
 		System.out.println("\nA velocidade agora e: " + carro.getVelocidade() + " km/h");
