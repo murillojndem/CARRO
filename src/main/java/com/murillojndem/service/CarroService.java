@@ -57,6 +57,7 @@ public class CarroService {
 		double combustivelConsumido = distancia * 0.1;
 		carro.setTanque(carro.getTanque() - combustivelConsumido);
 		System.out.println("\nO tanque do carro agora contem " + carro.getTanque() + " litros de combustivel.");
+		checaEstadoTanque();
 	}
 
 	public void abastecerCombustivel(double quantidade) {
@@ -66,6 +67,14 @@ public class CarroService {
 		} else {
 			carro.setTanque(carro.getTanque() + quantidade);
 			System.out.println("\nO tanque tem " + carro.getTanque() + " litros");
+		}
+	}
+	
+	private void checaEstadoTanque() {
+		if(carro.getTanque() <= 10) {
+			System.out.println("\nTanque esta na reserva");
+		} else if(carro.getTanque() <= 25) {
+			System.out.println("\nTanque esta na metade");
 		}
 	}
 
@@ -123,17 +132,26 @@ public class CarroService {
 	}
 
 	public void acelerarService() {
-		if (checarEstado() && carro.getMarcha() != Marcha.PONTOMORTO) {
-			setVelocidade(carro.getVelocidade() + 10);
-			andarCarroService(0.5);
-			System.out.println("\nA velocidade agora e: " + carro.getVelocidade() + " km/h");
-			contarGiro();
-			if(carro.getContaGiro() == 3)
-			{
-				System.out.println("\nPode passar a marcha");
-			}
+		if (checaVelocidadeMaxima()) {
+			if (checarEstado() && carro.getMarcha() != Marcha.PONTOMORTO) {
+				setVelocidade(carro.getVelocidade() + 10);
+				andarCarroService(0.5);
+				System.out.println("\nA velocidade agora e: " + carro.getVelocidade() + " km/h");
+				contarGiro();
+				if (carro.getContaGiro() == 3) {
+					System.out.println("\nPode passar a marcha");
+				}
+			} else
+				System.out.println("\nCarro esta desligado ou em ponto morto");
 		} else
-			System.out.println("\nCarro esta desligado ou em ponto morto");
+			System.out.println("\nCarro chegou na velocidade maxima");
+	}
+	
+	public boolean checaVelocidadeMaxima() {
+		if(carro.getVelocidade() < 120) {
+			return true;
+		}
+		else return false;
 	}
 
 	public void desacelerarService() {
